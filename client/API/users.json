@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "prenom": "Jean",
+      "nom": "Dupont",
+      "ville": "Paris",
+      "email": "jean.dupont@email.com",
+      "telephone": "1111111111",
+      "profilPic": "profilPic.jpg"
+    },
+    {
+      "id": "2",
+      "prenom": "Pamella",
+      "nom": "Rodrigez",
+      "ville": "Lyon",
+      "email": "pamella.rodrigez@email.com",
+      "telephone": "2222222222",
+      "profilPic": "profilPic.jpg"
+    },
+    {
+      "id": "3",
+      "prenom": "Xivie",
+      "nom": "Song",
+      "ville": "Nantes",
+      "email": "xivie.song@email.com",
+      "telephone": "3333333333",
+      "profilPic": "profilPic.jpg"
+    }
+  ]
+}
