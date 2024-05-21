@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Users } from './users.model';
-import { Observable, map } from 'rxjs';
 import { Router} from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+import { Users } from './users.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +12,6 @@ import { Router} from '@angular/router';
 export class UsersService {
   
   constructor(private http: HttpClient, private router: Router) { }
-
-/*   APITEST = "http://localhost:9000/api/v1/users"; // test avec API OZES en NODE JS
-  getUsers(): Observable<Users[]> {
-    return this.http.get<{ user: Users[] }>(`${this.APITEST}/all`).pipe(
-      map(response => response.user) // Mappez la propriété 'user' de la réponse sinon les données ne peuvent pas être injecter
-    );
-  }
-  getUserByPseudo(pseudo: string) {
-    return this.http.get<Users[]>(`${this.APITEST}/${pseudo}`).pipe(
-      map(users => users.find(user => {
-        // return user
-        return user.pseudo === pseudo // les deux fonctionnent
-      }))
-    );
-  }; */
 
   isLoggedIn = () => {
     if (localStorage.getItem('loggedInUser')){
@@ -35,29 +22,33 @@ export class UsersService {
     }
   };
 
+  API = "http://localhost:8080/api/users";
 
-  API = "http://localhost:9000/api/v1/users"; // nouvel API JAVA
-
-  getUsers(): Observable<Users[]> {
-    return this.http.get<{ user: Users[] }>(`${this.API}/all`).pipe(
-      map(response => response.user) // Mappez la propriété 'user' de la réponse sinon les données ne peuvent pas être injecter
-    );
+  getAllUsers(): Observable<Users[]> {
+    return this.http.get<Users[]>(`${this.API}/all`);
   }
-  getUserById(pseudo: string) {
-    return this.http.get<Users[]>(`${this.API}/${pseudo}`).pipe(
-      map(users => users.find(user => {
-        return user
-        // return user.pseudo === pseudo // les deux fonctionnent
-      }))
-    );
+
+  getUserById(userId: number) {
+    return this.http.get<Users>(`${this.API}/id/${userId}`)
   };
 
-  addUser(user: Users) {
-    return this.http.post<Users>(`${this.API}`, user);
+  getUserByEmail(userEmail: string) {
+    return this.http.get<Users>(`${this.API}/email/${userEmail}`)
+  };
+
+  createUser(user: Users): Observable<string> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.API}/create`, user, { headers, observe: 'response', responseType: 'text' })
+      .pipe(
+        map((response: HttpResponse<any>) => response.body as string),
+            catchError((error: HttpErrorResponse) => {
+                return throwError(error);
+            })
+      );
   }
 
   updateUser(userId: number, user: Users) {
-    return this.http.put<Users>(`${this.API}/${userId}`, user);
+    return this.http.put<Users>(`${this.API}/update_infos/${userId}`, user);
   }
 
   deleteUser(userId: number) {

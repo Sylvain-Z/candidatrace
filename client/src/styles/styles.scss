@@ -60,7 +60,7 @@ h5 {
     width: 360px;
     height: 100vh;
     margin: auto;
-    background-color: rgb(0, 173, 121);
+    background-color: $Turquoise;
 
     h2 {
         position: absolute;
@@ -118,6 +118,12 @@ section {
         border-radius: 50px;
         background-color: $White;
     }
+
+    .profilePic {
+        display: block;
+        margin:  25px auto;
+        width: 150px;
+    }
 }
 
 // Profil
@@ -166,16 +172,29 @@ section {
         border-radius: 50px;
     }
 
+
     .action-btn {
         color: $White;
         background-color: $Blue;
         border: none;
         margin-bottom: 25px;
     }
+    
+    .turquoise{
+        background-color: $Turquoise;
+    }
 
-    .validation-msg {
-        color: $Turquoise;
+    p {  
         text-align: center;
+    }
+
+    .green-msg {
+        color: $Turquoise;
         margin-bottom: 25px;
     }
+    .red-msg {
+        color: $Red;
+        margin-bottom: 25px;
+    }
+  
 }

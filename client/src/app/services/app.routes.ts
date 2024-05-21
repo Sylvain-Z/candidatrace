@@ -14,17 +14,22 @@ export const appRoutes: Routes = [
     {
         path : 'connexion',
         title : 'Connexion',
-        loadComponent: () => import('../components/users/logs/login.component'),
+        loadComponent: () => import('../components/users/logs/signIn.component'),
     },
     {
-        path : 'tableau-de-bord',
+        path : 'creer-mon-compte',
+        title : 'Créer un compte',
+        loadComponent: () => import('../components/users/logs/signUp.component'),
+    },
+    {
+        path : 'tableau-de-bord/:id',
         title : 'Tableau de Bord',
         canActivate : [() => inject(UsersService).isLoggedIn()], // bloque l'accès à certaine pages lorsque le use n'est pas connecté
         loadComponent: () => import('../components/users/dashboard.component') // lazyloading
         // component: DashboardComponent,  // route de base
     },
     {
-        path : 'candidatures',
+        path : 'candidatures/:id',
         title : 'Candidatures',
         canActivate : [() => inject(UsersService).isLoggedIn()],
         loadComponent: () => import('../components/users/applications.component'),
@@ -36,7 +41,7 @@ export const appRoutes: Routes = [
         loadComponent: () => import('../components/users/profil/profil.component') ,
     },
     {
-        path : 'documents',
+        path : 'documents/:id',
         title : 'Documents',
         canActivate : [() => inject(UsersService).isLoggedIn()],
         loadComponent: () => import('../components/users/myFiles.component') ,

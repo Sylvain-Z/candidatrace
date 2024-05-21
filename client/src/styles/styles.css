@@ -99,6 +99,11 @@ section .dashboard-p {
   border-radius: 50px;
   background-color: rgb(240, 240, 240);
 }
+section .profilePic {
+  display: block;
+  margin: 25px auto;
+  width: 150px;
+}
 
 .profil-form {
   width: 80%;
@@ -139,6 +144,9 @@ section .dashboard-p {
   background-color: rgb(0, 173, 121);
   border: none;
   border-radius: 50px;
+}
+.profil-form .signup-btn {
+  color: rgb(0, 173, 121);
 }
 .profil-form .action-btn {
   color: rgb(240, 240, 240);

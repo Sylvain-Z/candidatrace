@@ -4,8 +4,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../../services/users/users.service';
-import { Users } from        '../../../services/users/users.model';
-// import { Observable } from 'rxjs';
+import { Users } from '../../../services/users/users.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profil',
@@ -15,26 +15,63 @@ import { Users } from        '../../../services/users/users.model';
 
     <section class="dashboard-section">
       <h2>Mon profil</h2>
-
-      <!-- <div *ngFor="let user of users | async">
-        <p>{{user.lastname}}</p>
-      </div> -->
+      
+      <img
+        class="profilePic"
+        [src]="userInfos.profile_pic === '' ? '../../assets/images/profilePic.png' : '../../assets/images/'+userInfos.profile_pic"
+        alt="photo de profil"
+      />
 
       <form class="profil-form" [formGroup]="profilForm">
         <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" [className]="editIsActive ? '' : 'disabled-input'" [attr.disabled]="editIsActive ? null : true" formControlName="firstname">
+        <input
+          type="text"
+          id="prenom"
+          [className]="editIsActive ? '' : 'disabled-input'"
+          [attr.disabled]="editIsActive ? null : true"
+          formControlName="firstname"
+          placeholder="Prénom"
+        >
 
         <label for="nom">Nom</label>
-        <input type="text" id="nom" [className]="editIsActive ? '' : 'disabled-input'" [attr.disabled]="editIsActive ? null : true" formControlName="lastname">
+        <input
+          type="text"
+          id="nom"
+          [className]="editIsActive ? '' : 'disabled-input'"
+          [attr.disabled]="editIsActive ? null : true"
+          formControlName="lastname"
+          placeholder="Nom"
+        >
 
         <label for="ville">Ville</label>
-        <input type="text" id="ville" [className]="editIsActive ? '' : 'disabled-input'" [attr.disabled]="editIsActive ? null : true" formControlName="city">
+        <input
+          type="text"
+          id="ville"
+          [className]="editIsActive ? '' : 'disabled-input'"
+          [attr.disabled]="editIsActive ? null : true"
+          formControlName="city"
+          placeholder="Ville"
+        >
         
         <label for="email">Email</label>
-        <input type="email" id="email" [className]="editIsActive ? '' : 'disabled-input'" [attr.disabled]="editIsActive ? null : true" formControlName="email">
+        <input
+          type="email"
+          id="email"
+          [className]="editIsActive ? '' : 'disabled-input'"
+          [attr.disabled]="editIsActive ? null : true"
+          formControlName="email"
+          placeholder="Email"
+        >
 
         <label for="telephone">Téléphone</label>
-        <input type="tel" id="telephone" [className]="editIsActive ? '' : 'disabled-input'" [attr.disabled]="editIsActive ? null : true" formControlName="phone">
+        <input
+          type="tel"
+          id="telephone"
+          [className]="editIsActive ? '' : 'disabled-input'"
+          [attr.disabled]="editIsActive ? null : true"
+          formControlName="phone"
+          placeholder="Téléphone"
+          >
 
         <p class="validation-msg">{{message}}</p>
 
@@ -52,8 +89,7 @@ import { Users } from        '../../../services/users/users.model';
 
 export default class ProfilComponent implements OnInit {
 
-  // users! : Observable<Users[]>;
-  user!: Users;
+  userInfos!: Users;
   userEdit!: Users;
   editIsActive: boolean = true;
   message: string = "";
@@ -68,20 +104,18 @@ export default class ProfilComponent implements OnInit {
     phone: new FormControl('', [Validators.pattern(/^\d+$/), Validators.required, Validators.maxLength(10), Validators.minLength(10)]),
   })
 
-  toggleEdit(): void  {
+  toggleEdit(): void {
     this.editIsActive = !this.editIsActive;
   };
 
   ngOnInit(): void {
-    // this.users = this.userService.getUsers();
 
     this.route.params.subscribe(params => {
-      const pseudo = params['id'];
+      const userId = params['id'];
 
-      this.userService.getUserById(pseudo).subscribe(user => {
+      this.userService.getUserById(userId).subscribe(user => {
 
-        console.log('Données de l\'utilisateur :', user);
-        console.log('Id utilisateur :', pseudo);
+        console.log('Données du user :', user);
 
         if (user) {
           this.profilForm.patchValue({
@@ -91,10 +125,11 @@ export default class ProfilComponent implements OnInit {
             email: user.email,
             phone: user.phone,
           });
-          this.user = user;
+          this.userInfos = user;
+          console.log('Données du userInfos :', this.userInfos);
           this.toggleEdit();
         } else {
-          console.log('Utilisateur non trouvé. Id :', pseudo);
+          console.log('Utilisateur non trouvé. Id :', userId);
         }
       });
     });
