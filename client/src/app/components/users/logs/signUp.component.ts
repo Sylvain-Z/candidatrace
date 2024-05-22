@@ -27,12 +27,11 @@ import { Users } from '../../../services/users/users.model';
         <p class="green-msg">{{message}}</p>
         <p class="red-msg">{{message2}}</p>
 
-        <button type="submit" class="action-btn">S'enregistrer</button>
+        <button type="submit" class="action-btn signup">S'enregistrer</button>
         
         <p>Vous avez déjà un compte ?</p>
         <p class="green-msg"><a routerLink="/connexion">Se connecter</a></p>
       </form>
-
 
     </section>
   `,
@@ -44,7 +43,6 @@ export default class SignUpComponent {
 
   message: string = "";
   message2: string = "";
-  message3: string = "";
   passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,12}$/;
 
   signupForm = new FormGroup({
@@ -68,7 +66,7 @@ export default class SignUpComponent {
           phone: "",
           email: email,
           password: password,
-          profile_pic: "profilePicUser3.png",
+          profile_pic: "",
         };
 
         this.userService.createUser(newUser).subscribe({

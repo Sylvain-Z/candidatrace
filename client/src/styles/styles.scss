@@ -179,9 +179,17 @@ section {
         border: none;
         margin-bottom: 25px;
     }
+    .action-btn:hover {
+        transform: scale(1.02);
+    }
     
-    .turquoise{
-        background-color: $Turquoise;
+    .signin{
+        color: $Black;
+        background-color: $Yellow;
+    }
+    .signin:hover{
+        color: $White;
+        background-color: $Blue;
     }
 
     p {  

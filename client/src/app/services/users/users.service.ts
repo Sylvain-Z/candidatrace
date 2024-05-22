@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse  } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -10,11 +10,11 @@ import { Users } from './users.model';
   providedIn: 'root'
 })
 export class UsersService {
-  
+
   constructor(private http: HttpClient, private router: Router) { }
 
   isLoggedIn = () => {
-    if (localStorage.getItem('loggedInUser')){
+    if (localStorage.getItem('loggedInUser')) {
       return true;
     } else {
       this.router.navigate(['/']);
@@ -41,18 +41,28 @@ export class UsersService {
     return this.http.post(`${this.API}/create`, user, { headers, observe: 'response', responseType: 'text' })
       .pipe(
         map((response: HttpResponse<any>) => response.body as string),
-            catchError((error: HttpErrorResponse) => {
-                return throwError(error);
-            })
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error);
+        })
       );
   }
 
+  signIn(user: Users) {
+    return this.http.post(`${this.API}/signin`, user, { observe: 'response', responseType: 'text' })
+      .pipe(
+        map((response: HttpResponse<any>) => response.body as string),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error);
+        })
+      );
+  };
+
   updateUser(userId: number, user: Users) {
     return this.http.put<Users>(`${this.API}/update_infos/${userId}`, user);
-  }
+  };
 
   deleteUser(userId: number) {
     return this.http.delete<Users>(`${this.API}/${userId}`);
-  }
-  
+  };
+
 }

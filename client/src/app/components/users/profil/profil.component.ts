@@ -80,7 +80,6 @@ import { Observable } from 'rxjs';
         <button [className]="editIsActive ? '' : 'hidden'" (click)="toggleEdit()">Annuler</button>
       </form>
 
-      <!-- <p>Le formulaire est valide : {{ profilForm.valid }}</p> -->
       <p>editIsActive : {{ editIsActive }}</p>
 
     </section>
@@ -88,6 +87,8 @@ import { Observable } from 'rxjs';
 })
 
 export default class ProfilComponent implements OnInit {
+
+  // A FAIRE : IMPLEMENTATION DE LA MISE A JOUR DES DONNEES -------------------------------
 
   userInfos!: Users;
   userEdit!: Users;
