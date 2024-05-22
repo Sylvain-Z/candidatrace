@@ -1,10 +1,13 @@
 package candidatrace.server.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import candidatrace.server.exception.UserAlreadyExistsException;
+import candidatrace.server.exception.AuthenticationException;
 import candidatrace.server.model.Users;
 import candidatrace.server.repository.UsersRepository;
 
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +16,11 @@ import java.util.Optional;
 public class UsersService {
 
     private UsersRepository usersRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public UsersService(UsersRepository usersRepository) { // constructeur
+    public UsersService(UsersRepository usersRepository, PasswordEncoder passwordEncoder) { // constructeur
         this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Users> getAllUsers() {
@@ -42,33 +47,43 @@ public class UsersService {
         if (userBDD.isPresent()) {
             throw new UserAlreadyExistsException("Un utilisateur avec cet email existe déjà.");
         } else {
+            users.setPassword(passwordEncoder.encode(users.getPassword()));
             this.usersRepository.save(users);
             return true;
         }
     }
 
-    // HACHAGE DU MOT DE PASSE POUR CREATE
-    // IMPLEMENTATION FRONT A REPRENDRE ICI -------------------------------
+    public String authenticate(String email, String password) {
+        Users user = getUserByEmail(email);
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new AuthenticationException("Invalid email or password");
+        }
+        // For simplicity, return a message instead of a token
+        return "Authentication successful";
+    }
 
-    //  public void update(int id, Users users) {
-    //      Optional<Users> userBDD = this.usersRepository.findById(id);
-    //      if (userBDD.isEmpty()) {
-    //          System.out.println("Echec de la modification des données");
-    //     } else {
-    //         users.setId(id);
-    //         this.usersRepository.save(users);
-    //         System.out.println("Modification des information réussie");
-    //     }
-    // }
 
-    //  public void deleteUser(int id) {
-    //     Optional<Users> userBDD = this.usersRepository.findById(id);
-    //     if (userBDD.isEmpty()) {
-    //         System.out.println("L'utilisateur avec l'id" + id + "n'existe pas");
-    //     } else {
-    //         this.usersRepository.deleteById(id);
-    //         System.out.println("Suppression réussie");
-    //     }
-    // }
+// IMPLEMENTATION FRONT A REPRENDRE ICI -------------------------------
+
+//  public void update(int id, Users users) {
+//      Optional<Users> userBDD = this.usersRepository.findById(id);
+//      if (userBDD.isEmpty()) {
+//          System.out.println("Echec de la modification des données");
+//     } else {
+//         users.setId(id);
+//         this.usersRepository.save(users);
+//         System.out.println("Modification des information réussie");
+//     }
+// }
+
+//  public void deleteUser(int id) {
+//     Optional<Users> userBDD = this.usersRepository.findById(id);
+//     if (userBDD.isEmpty()) {
+//         System.out.println("L'utilisateur avec l'id" + id + "n'existe pas");
+//     } else {
+//         this.usersRepository.deleteById(id);
+//         System.out.println("Suppression réussie");
+//     }
+// }
 
 }

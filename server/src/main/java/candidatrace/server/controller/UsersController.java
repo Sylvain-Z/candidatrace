@@ -1,5 +1,6 @@
 package candidatrace.server.controller;
 
+import candidatrace.server.exception.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,17 @@ public class UsersController {
         }
     }
 
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PostMapping(path = "signin", consumes = APPLICATION_JSON_VALUE, produces = "text/plain")
+    public ResponseEntity<String> authenticate(@RequestBody Users users) {
+
+        try {
+            String message = usersService.authenticate(users.getEmail(), users.getPassword());
+            return ResponseEntity.ok(message);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
 
     // IMPLEMENTATION FRONT A REPRENDRE ICI -------------------------------
 
