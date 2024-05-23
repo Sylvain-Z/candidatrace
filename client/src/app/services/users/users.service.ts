@@ -58,11 +58,17 @@ export class UsersService {
   };
 
   updateUser(userId: number, user: Users) {
-    return this.http.put<Users>(`${this.API}/update_infos/${userId}`, user);
+    return this.http.put(`${this.API}/update_infos/${userId}`, user, { observe: 'response', responseType: 'text' })
+    .pipe(
+      map((response: HttpResponse<any>) => response.body as string),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error);
+        })
+    );
   };
 
   deleteUser(userId: number) {
-    return this.http.delete<Users>(`${this.API}/${userId}`);
+    return this.http.delete<Users>(`${this.API}/delete/${userId}`);
   };
 
 }

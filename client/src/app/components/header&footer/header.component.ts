@@ -40,7 +40,6 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    // Supprime l'email de l'utilisateur connecté du stockage local
     localStorage.removeItem('loggedInUser');
     this.router.navigate(['/']);
   }

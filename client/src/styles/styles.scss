@@ -172,7 +172,6 @@ section {
         border-radius: 50px;
     }
 
-
     .action-btn {
         color: $White;
         background-color: $Blue;
@@ -192,6 +191,30 @@ section {
         background-color: $Blue;
     }
 
+    .red-altert {
+        width: 110px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        margin: auto;
+        color: $Red;
+        border-radius: 50px;
+        border: 1px solid $Red;
+        cursor: pointer;
+    }
+    .red-altert:hover {
+        background-color: $Red;
+        color: $White;
+    }
+    .delete-btn {
+        width: 220px;
+        margin-top: 25px;
+    }
+    .cancel-btn {
+        color: $White;
+        background-color: $Red;
+    }
+
     p {  
         text-align: center;
     }
@@ -206,3 +229,7 @@ section {
     }
   
 }
+
+/* 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */

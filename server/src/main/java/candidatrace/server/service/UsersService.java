@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import candidatrace.server.exception.UserAlreadyExistsException;
+import candidatrace.server.exception.UserNotFoundException;
 import candidatrace.server.exception.AuthenticationException;
 import candidatrace.server.model.Users;
 import candidatrace.server.repository.UsersRepository;
@@ -59,31 +60,34 @@ public class UsersService {
             throw new AuthenticationException("Invalid email or password");
         }
         // For simplicity, return a message instead of a token
-        return "Authentication successful";
+        return "Connexion réussi";
     }
 
+    public boolean update(int id, Users updatedUser) {
+        Optional<Users> userBDD = this.usersRepository.findById(id);
+        if (userBDD.isEmpty()) {
+            throw new UserNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
+        } else {
+            Users existingUser = userBDD.get();
+            existingUser.setFirstname(updatedUser.getFirstname());
+            existingUser.setLastname(updatedUser.getLastname());
+            existingUser.setCity(updatedUser.getCity());
+            existingUser.setPhone(updatedUser.getPhone());
+            existingUser.setEmail(updatedUser.getEmail());
+            this.usersRepository.save(existingUser);
+            System.out.println("Modification des information réussie");
+            return true;
+        }
+    }
 
-// IMPLEMENTATION FRONT A REPRENDRE ICI -------------------------------
-
-//  public void update(int id, Users users) {
-//      Optional<Users> userBDD = this.usersRepository.findById(id);
-//      if (userBDD.isEmpty()) {
-//          System.out.println("Echec de la modification des données");
-//     } else {
-//         users.setId(id);
-//         this.usersRepository.save(users);
-//         System.out.println("Modification des information réussie");
-//     }
-// }
-
-//  public void deleteUser(int id) {
-//     Optional<Users> userBDD = this.usersRepository.findById(id);
-//     if (userBDD.isEmpty()) {
-//         System.out.println("L'utilisateur avec l'id" + id + "n'existe pas");
-//     } else {
-//         this.usersRepository.deleteById(id);
-//         System.out.println("Suppression réussie");
-//     }
-// }
+    public void deleteUser(int id) {
+        Optional<Users> userBDD = this.usersRepository.findById(id);
+        if (userBDD.isEmpty()) {
+            System.out.println("L'utilisateur avec l'id" + id + "n'existe pas");
+        } else {
+            this.usersRepository.deleteById(id);
+            System.out.println("Suppression réussie");
+        }
+    }
 
 }
