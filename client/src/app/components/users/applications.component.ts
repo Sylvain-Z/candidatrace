@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
   template: `
   <section class="dashboard-section">
     <h2>Mes candidatures</h2>
+
+    <button>Candidature +</button>
   </section>
 `,
 })

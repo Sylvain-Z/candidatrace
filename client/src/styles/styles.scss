@@ -1,3 +1,19 @@
+@font-face {
+    font-family: "FashionFetishSmallCap";
+    src: url("../assets/fonts/FashionFetish-SmallCaps.ttf");
+}
+
+@font-face {
+    font-family: "FashionFetish";
+    src: url("../assets/fonts/FashionFetish-Regular.ttf");
+}
+
+@font-face {
+    font-family: "FashionFetishBold";
+    src: url("../assets/fonts/FashionFetish-Bold.ttf");
+}
+
+
 $Black : rgb(15, 15, 15);
 $White : rgb(240, 240, 240);
 $Yellow : rgb(255, 196, 50);
@@ -6,6 +22,9 @@ $Blue : rgb(26, 28, 93);
 $Turquoise : rgb(0, 173, 121);
 $Darked : rgba(15, 15, 15, 0.5);
 $DarkedLight : rgba(15, 15, 15, 0.2);
+$title : "FashionFetishSmallCap";
+$text : "FashionFetish";
+$textBold : "FashionFetishBold";
 
 /* GENERALES */
 
@@ -21,9 +40,7 @@ html {
 
 body {
     font-size: 16px;
-    font-family: "Poppins";
-    font-weight: 300;
-    font-style: normal;
+    font-family: $text;
 }
 
 a {
@@ -49,8 +66,7 @@ h3,
 h4,
 h5,
 h5 {
-    font-weight: 600;
-    text-transform: capitalize;
+    font-family: $title;
 }
 
 // Page d'accueil
@@ -92,6 +108,7 @@ section {
         text-align: center;
         color: $Turquoise ;
     }
+
     h3 {
         text-align: center;
         color: $Blue;
@@ -121,10 +138,11 @@ section {
 
     .profilePic {
         display: block;
-        margin:  25px auto;
+        margin: 25px auto;
         width: 150px;
     }
 }
+
 
 // Profil
 
@@ -138,7 +156,6 @@ section {
     label {
         margin: 0 0 10px 20px;
         color: $Turquoise;
-        font-weight: 600;
     }
 
     input {
@@ -150,11 +167,17 @@ section {
         border-radius: 50px;
         background-color: $White;
     }
+
+    input::placeholder {
+        font-family: $text;
+        text-transform: lowercase;
+    }
+
     .disabled-input {
         background-color: transparent;
         color: $Black;
     }
-        
+
     button {
         width: 110px;
         height: 40px;
@@ -173,23 +196,28 @@ section {
     }
 
     .action-btn {
+        width: fit-content;
+        font-family: $text;
         color: $White;
         background-color: $Blue;
         border: none;
         margin-bottom: 25px;
+        padding: 5px 20px;
     }
+
     .action-btn:hover {
         transform: scale(1.02);
     }
-    
-    .signin{
+
+    .signin {
         color: $Black;
         background-color: $Yellow;
     }
-    .signin:hover{
+
+/*     .signin:hover {
         color: $White;
         background-color: $Blue;
-    }
+    } */
 
     .red-altert {
         width: 110px;
@@ -202,20 +230,23 @@ section {
         border: 1px solid $Red;
         cursor: pointer;
     }
+
     .red-altert:hover {
         background-color: $Red;
         color: $White;
     }
+
     .delete-btn {
         width: 220px;
         margin-top: 25px;
     }
+
     .cancel-btn {
         color: $White;
         background-color: $Red;
     }
 
-    p {  
+    p {
         text-align: center;
     }
 
@@ -223,12 +254,86 @@ section {
         color: $Turquoise;
         margin-bottom: 25px;
     }
+
     .red-msg {
         color: $Red;
         margin-bottom: 25px;
     }
-  
+
 }
+
+// SigIn & SignUp
+
+.signin-up-h2 {
+    margin-bottom: 25px;
+}
+
+.signin-article,
+.signup-article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+    padding: 25px;
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 25px;
+    }
+
+    form {
+        margin: 0 auto;
+    }
+
+    .switch-in-up {
+        margin: 5px 0;
+        background-color: transparent;
+        border: none;
+        width: fit-content;
+    }
+    .switch-in-up:hover {
+        background-color: transparent;
+    }
+    .btn {
+        width: fit-content;
+        height: 40px;
+        border-radius: 50px;
+        padding: 5px 20px;
+    }
+
+}
+
+.signin-article {
+    background-color: $Blue;
+
+    h3 {
+        color: $White;
+    }
+    
+    .switch-in-up {
+        color: $White;
+    }
+    .btn {
+        border: 1px solid $White;
+    }
+}
+
+.signup-article {
+    background-color: $Yellow;
+    
+    .btn {
+        border: 1px solid $Black;
+    }
+}
+
+
+
+
+
+
+
+
 
 /* 
 html, body { height: 100%; }

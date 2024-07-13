@@ -36,7 +36,8 @@ export class HeaderComponent implements OnInit {
   }
 
   isLogginPage(): boolean {
-    return this.router.url === '/connexion' || this.router.url === '/creer-mon-compte';
+    return this.router.url === '/compte';
+    // return this.router.url === '/connexion' || this.router.url === '/creer-mon-compte';
   }
 
   logout(): void {

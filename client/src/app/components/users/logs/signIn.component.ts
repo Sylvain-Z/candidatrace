@@ -29,7 +29,7 @@ import { Users } from '../../../services/users/users.model';
 
         <button type="submit" class="action-btn signin">Se connecter</button>
 
-        <p>Vous n'aver pas de compte ?</p>
+        <p>Vous n'avez pas de compte ?</p>
         <p class="green-msg"><a routerLink="/creer-mon-compte" routerLinkActive="active">Créez votre compte</a></p>
 
       </form>

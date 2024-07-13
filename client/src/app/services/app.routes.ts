@@ -12,6 +12,11 @@ export const appRoutes: Routes = [
         loadComponent: () => import('../components/home/home.component') 
     },
     {
+        path : 'compte',
+        title : 'Connexion-Enregistrement',
+        loadComponent: () => import('../components/users/logs/sign-in-up.component'),
+    },
+/*     {
         path : 'connexion',
         title : 'Connexion',
         loadComponent: () => import('../components/users/logs/signIn.component'),
@@ -20,7 +25,7 @@ export const appRoutes: Routes = [
         path : 'creer-mon-compte',
         title : 'Créer un compte',
         loadComponent: () => import('../components/users/logs/signUp.component'),
-    },
+    }, */
     {
         path : 'tableau-de-bord/:id',
         title : 'Tableau de Bord',

@@ -12,7 +12,7 @@ import { Users } from '../../services/users/users.model';
   template: `
     <section class="home">
       <h2>CandidaTrace</h2>
-      <a routerLink="/connexion">Commencer</a>
+      <a routerLink="/compte">Commencer</a>
     </section>
   `,
   styles: ``
