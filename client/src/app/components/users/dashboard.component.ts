@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   template: `
-  <section>
+  <section class="dashboard-section">
     <h2>Mon tableau de bord</h2>
 
     <p class="dashboard-p">Nombre de candidatures : </p>

@@ -18,8 +18,11 @@ $Black : rgb(15, 15, 15);
 $White : rgb(240, 240, 240);
 $Yellow : rgb(255, 196, 50);
 $Red : rgb(199, 18, 18);
+$LightRed : rgb(255, 157, 157);
 $Blue : rgb(26, 28, 93);
+$LightBlue : rgb(152, 205, 255);
 $Turquoise : rgb(0, 173, 121);
+$LightTurquoise : rgb(156, 240, 216);
 $Darked : rgba(15, 15, 15, 0.5);
 $DarkedLight : rgba(15, 15, 15, 0.2);
 $title : "FashionFetishSmallCap";
@@ -69,6 +72,18 @@ h5 {
     font-family: $title;
 }
 
+button {
+    width: fit-content;
+    height: 40px;
+    margin: auto;
+    padding: 5px 20px;
+    border-radius: 50px;
+    border: none;
+    background-color: transparent;
+    font-family: $text;
+    font-size: 12px;
+}
+
 // Page d'accueil
 
 .home {
@@ -87,22 +102,27 @@ h5 {
 
     a {
         position: absolute;
-        color: $White ;
+        color: $White;
         top: 60%;
         left: 10%;
+        height: 45px;
+        line-height: 30px;
         border-radius: 50px;
         border: 1px solid $White;
-        padding: 10px 25px;
+        padding: 5px 20px;
+    }
+    a:hover {
+        background-color: $White;
+        color: $Turquoise;
     }
 }
-
-
-// Dashboard
 
 section {
     width: 360px;
     margin: auto;
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
 
     h2 {
         text-align: center;
@@ -113,17 +133,6 @@ section {
         text-align: center;
         color: $Blue;
         margin: 50px 0;
-    }
-
-    .link-home {
-        width: 110px;
-        height: 40px;
-        line-height: 40px;
-        margin: 50px auto;
-        color: $Turquoise ;
-        text-align: center;
-        border-radius: 50px;
-        border: 1px solid $Turquoise;
     }
 
     .dashboard-p {
@@ -144,7 +153,7 @@ section {
 }
 
 
-// Profil
+// Profil Formulaires
 
 .profil-form {
     width: 80%;
@@ -158,7 +167,7 @@ section {
         color: $Turquoise;
     }
 
-    input {
+    input, select {
         height: 40px;
         line-height: 40px;
         margin-bottom: 20px;
@@ -178,52 +187,14 @@ section {
         color: $Black;
     }
 
-    button {
-        width: 110px;
-        height: 40px;
-        margin: auto;
-        color: $Turquoise;
-        background-color: transparent;
-        border: 1px solid $Turquoise;
-        border-radius: 50px;
-    }
-
-    button:hover {
-        color: $White;
-        background-color: $Turquoise;
-        border: none;
-        border-radius: 50px;
-    }
-
-    .action-btn {
-        width: fit-content;
-        font-family: $text;
+    .confirm-btn {
         color: $White;
         background-color: $Blue;
         border: none;
         margin-bottom: 25px;
-        padding: 5px 20px;
     }
-
-    .action-btn:hover {
-        transform: scale(1.02);
-    }
-
-    .signin {
-        color: $Black;
-        background-color: $Yellow;
-    }
-
-/*     .signin:hover {
-        color: $White;
-        background-color: $Blue;
-    } */
 
     .red-altert {
-        width: 110px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 14px;
         margin: auto;
         color: $Red;
         border-radius: 50px;
@@ -237,7 +208,6 @@ section {
     }
 
     .delete-btn {
-        width: 220px;
         margin-top: 25px;
     }
 
@@ -251,82 +221,122 @@ section {
     }
 
     .green-msg {
+        font-size: 14px;
         color: $Turquoise;
         margin-bottom: 25px;
     }
 
     .red-msg {
+        font-size: 14px;
         color: $Red;
         margin-bottom: 25px;
     }
-
 }
 
 // SigIn & SignUp
 
-.signin-up-h2 {
-    margin-bottom: 25px;
-}
+.logs-sections {
 
-.signin-article,
-.signup-article {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    margin: auto;
-    padding: 25px;
-
-    h3 {
-        margin-top: 0;
+    .logs-sections-h2 {
         margin-bottom: 25px;
     }
 
-    form {
-        margin: 0 auto;
+    .signin,
+    .signup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        margin: auto;
+        padding: 25px;
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        form {
+            margin: 0 auto;
+        }
+
+        .switch-in-up {
+            width: fit-content;
+            margin: 5px 0;
+            background-color: transparent;
+            border: none;
+            font-size: 12px;
+        }
     }
 
-    .switch-in-up {
-        margin: 5px 0;
-        background-color: transparent;
-        border: none;
-        width: fit-content;
-    }
-    .switch-in-up:hover {
-        background-color: transparent;
-    }
-    .btn {
-        width: fit-content;
-        height: 40px;
-        border-radius: 50px;
-        padding: 5px 20px;
+    .signin {
+        background-color: $Blue;
+
+        h3 {
+            color: $White;
+        }
+
+        .switch-in-up {
+            color: $White;
+        }
+
+        .confirm-btn {
+            background-color: $Yellow;
+            color: $Blue;
+        }
     }
 
+    .signup {
+        background-color: $Yellow;
+    }
 }
 
-.signin-article {
-    background-color: $Blue;
+// Applications
 
-    h3 {
-        color: $White;
+.application-section {
+    align-items: center;
+        width: 360px;
+
+    .new-application {
+        margin: 25px 0;
+        background-color: $Yellow;
     }
-    
-    .switch-in-up {
-        color: $White;
+
+    .application {
+        position: relative;
+        width: 324px; // -10% de 360 -> 90% ne marche pas
+        border-radius: 10px;
+        margin-bottom: 25px;
+        padding: 25px;
+
+        p {
+            font-size: 14px;
+            margin: 0 0 10px 0;
+        }
     }
-    .btn {
-        border: 1px solid $White;
+    .company_name {
+        font-family: $textBold;
+        text-transform: uppercase;
+    }
+    .application_link {
+        position: absolute;
+        right: 25px;
+        top: 25px;
+        font-size: 25px;
+        margin: 0;
+    }
+    .wait {
+        background-color: $LightBlue;
+    }
+    .yes {
+        background-color: $LightTurquoise;
+    }
+    .no {
+        background-color: $LightRed;
+    }
+    .chevron {
+        text-align: center;
     }
 }
-
-.signup-article {
-    background-color: $Yellow;
-    
-    .btn {
-        border: 1px solid $Black;
-    }
-}
-
 
 
 

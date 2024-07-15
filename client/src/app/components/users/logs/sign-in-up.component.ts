@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -12,10 +12,10 @@ import { Users } from '../../../services/users/users.model';
   imports: [ReactiveFormsModule, RouterModule, CommonModule],
   template: `
 
-    <section class="dashboard-section signin">
-      <h2 class="signin-up-h2">Bienvenue</h2>
+    <section class="logs-sections">
+      <h2 class="logs-sections-h2">Bienvenue</h2>
       
-      <article class="signin-article" >
+      <article class="signin">
 
         <h3>Connectez-vous</h3>
 
@@ -30,17 +30,17 @@ import { Users } from '../../../services/users/users.model';
           <p class="green-msg">{{message}}</p>
           <p class="red-msg">{{message2}}</p>
 
-          <button type="submit" class="action-btn signin">Se connecter</button>
+          <button type="submit" class="confirm-btn">Se connecter</button>
         </form>
           
-          <p class="switch-in-up" *ngIf="!signinOpen">Vous avez déjà un compte</p>
-          <button class="switch-in-up btn" (click)="toggleForms()" type="button" *ngIf="!signinOpen">Se connecter</button>
-          <!-- <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="!signinOpen">&#65087;</button> -->
-          <!-- <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="signinOpen">&#65088;</button> -->
+          <p class="switch-in-up" *ngIf="!signinOpen">Vous avez déjà un compte ?</p>
+          <p class="switch-in-up" (click)="toggleForms()" *ngIf="!signinOpen">Connectez-vous</p>
+          <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="!signinOpen">&#65087;</button>
+          <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="signinOpen">&#65088;</button>
 
       </article>
 
-      <article class="signup-article">
+      <article class="signup">
         <h3>Créez un compte</h3>
 
         <form class="profil-form" [formGroup]="signupForm" (ngSubmit)="sigup()" *ngIf="!signinOpen">
@@ -54,13 +54,13 @@ import { Users } from '../../../services/users/users.model';
           <p class="green-msg">{{message3}}</p>
           <p class="red-msg">{{message4}}</p>
 
-          <button type="submit" class="action-btn signup">S'enregistrer</button>
+          <button type="submit" class="confirm-btn">S'enregistrer</button>
         </form>
         
-          <p class="switch-in-up" *ngIf="signinOpen">Vous n'avez pas de compte</p>
-          <button class="switch-in-up btn" (click)="toggleForms()" type="button" *ngIf="signinOpen">Créez votre compte</button>
-          <!-- <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="signinOpen">&#65087;</button> -->
-          <!-- <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="!signinOpen">&#65088;</button> -->
+          <p class="switch-in-up" *ngIf="signinOpen">Vous n'avez pas de compte ?</p>
+          <p  class="switch-in-up" (click)="toggleForms()" *ngIf="signinOpen">Créez votre compte</p>
+          <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="!signinOpen">&#65087;</button>
+          <button class="switch-in-up" (click)="toggleForms()" type="button"  *ngIf="signinOpen">&#65088;</button>
       
       </article>
 
@@ -68,7 +68,14 @@ import { Users } from '../../../services/users/users.model';
   `,
   styles: ``
 })
-export default class SignInUpComponent {
+export default class SignInUpComponent implements OnInit {
+
+  message: string = "";
+  message2: string = "";
+  message3: string = "";
+  message4: string = "";
+  user!: Users;
+  myUserEmail: string | null = localStorage.getItem('loggedInUser');
 
   constructor(private userService: UsersService, private router: Router) { }
 
@@ -77,12 +84,24 @@ export default class SignInUpComponent {
   toggleForms(): void {
     this.signinOpen = !this.signinOpen;
   }
+  
+  ngOnInit(): void {
 
-  message: string = "";
-  message2: string = "";
-  message3: string = "";
-  message4: string = "";
-  user!: Users;
+    if (this.myUserEmail === null) {
+      return;
+    } else {
+
+      this.userService.getUserByEmail(this.myUserEmail).subscribe(user => {
+        if (user) {
+          this.router.navigate([`/tableau-de-bord/${user.id}`]);
+        } else {
+          return
+        }
+      });
+
+    }
+
+  }
 
   passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,12}$/;
 

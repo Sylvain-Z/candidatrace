@@ -16,16 +16,6 @@ export const appRoutes: Routes = [
         title : 'Connexion-Enregistrement',
         loadComponent: () => import('../components/users/logs/sign-in-up.component'),
     },
-/*     {
-        path : 'connexion',
-        title : 'Connexion',
-        loadComponent: () => import('../components/users/logs/signIn.component'),
-    },
-    {
-        path : 'creer-mon-compte',
-        title : 'Créer un compte',
-        loadComponent: () => import('../components/users/logs/signUp.component'),
-    }, */
     {
         path : 'tableau-de-bord/:id',
         title : 'Tableau de Bord',
@@ -37,7 +27,13 @@ export const appRoutes: Routes = [
         path : 'candidatures/:id',
         title : 'Candidatures',
         canActivate : [() => inject(UsersService).isLoggedIn()],
-        loadComponent: () => import('../components/users/applications.component'),
+        loadComponent: () => import('../components/users/applications/applications.component'),
+    },
+    {
+        path : 'candidatures/:id/:application_id',
+        title : 'Candidatures',
+        canActivate : [() => inject(UsersService).isLoggedIn()],
+        loadComponent: () => import('../components/users/applications/applications-update.component').then(m => m.ApplicationsUpdateComponent),
     },
     {
         path : 'profil/:id',

@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-  <section class="dashboard-section">
+  <section class="files-section">
     <h2>Mes Documents</h2>
   </section>
 `,

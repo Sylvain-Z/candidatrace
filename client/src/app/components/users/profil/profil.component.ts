@@ -14,7 +14,7 @@ import { Users } from '../../../services/users/users.model';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
 
-    <section class="dashboard-section">
+    <section class="profil-section">
       <h2>Mon profil</h2>
       
       <img
@@ -75,13 +75,13 @@ import { Users } from '../../../services/users/users.model';
         <p class="green-msg">{{message}}</p>
         <p class="red-msg">{{message2}}</p>
 
-        <button class="action-btn" type="submit">Valider</button>
+        <button class="confirm-btn" type="submit">Valider</button>
         
-        <p [className]="deleteBtnVisible ? 'hidden' : 'red-altert'" (click)="displayDeleteBtn()">Attention</p>
+        <button type="button" [className]="deleteBtnVisible ? 'hidden' : 'red-altert'" (click)="displayDeleteBtn()">Attention</button>
 
-        <p [className]="deleteBtnVisible ? 'red-altert cancel-btn' : 'hidden'" (click)="displayDeleteBtn()">Annuler</p>
+        <button type="button" [className]="deleteBtnVisible ? 'red-altert cancel-btn' : 'hidden'" (click)="displayDeleteBtn()">Annuler</button>
 
-        <p [className]="deleteBtnVisible ? 'red-altert delete-btn' : 'hidden'" mat-button (click)="deletePopup()">Supprimer mon compte</p>
+        <button type="button" [className]="deleteBtnVisible ? 'red-altert delete-btn' : 'hidden'" mat-button (click)="deletePopup()">Supprimer mon compte</button>
 
       </form>
 
