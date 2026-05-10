@@ -1,0 +1,32 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node / Angular
+client/node_modules/
+client/dist/
+client/.angular/
+client/.cache/
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+# Java / Spring Boot
+server/target/
+server/*.log
+server/logs/
+
+# IDE / editor
+.vscode/
+.idea/
+*.iml
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Docker / local data
+mysql_data/
+*.pid

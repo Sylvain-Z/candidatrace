@@ -1,92 +1,75 @@
 package candidatrace.server.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import candidatrace.server.exception.UserAlreadyExistsException;
-import candidatrace.server.exception.UserNotFoundException;
-import candidatrace.server.exception.AuthenticationException;
-import candidatrace.server.model.Users;
-import candidatrace.server.repository.UsersRepository;
-
+import candidatrace.server.exception.ApplicationNotFoundException;
+import candidatrace.server.model.Applications;
+import candidatrace.server.repository.ApplicationsRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsersService {
+public class ApplicationsService {
 
-    private UsersRepository usersRepository;
-    private PasswordEncoder passwordEncoder;
+    private ApplicationsRepository applicationsRepository;
 
-    public UsersService(UsersRepository usersRepository, PasswordEncoder passwordEncoder) { // constructeur
-        this.usersRepository = usersRepository;
-        this.passwordEncoder = passwordEncoder;
+    public ApplicationsService(ApplicationsRepository applicationsRepository) {
+        this.applicationsRepository = applicationsRepository;
     }
 
-    public List<Users> getAllUsers() {
-        return this.usersRepository.findAll();
+    public List<Applications> getAllApplications() {
+        return this.applicationsRepository.findAll();
     }
 
-    public Users getUserById(int id) {
-        Optional<Users> optionalUsers = this.usersRepository.findById(id);
-        // if (optionalUsers.isPresent()){
-        //     return optionalUsers.get();
-        // } else {
-        //     return null;
-        // }
-        return optionalUsers.orElse(null); // version optimisé du code juste au-dessus
+    public Applications getApplicationById(int id) {
+        Optional<Applications> optionalApplications = this.applicationsRepository.findById(id);
+        return optionalApplications.orElse(null);
     }
 
-    public Users getUserByEmail(String email) {
-        Optional<Users> optionalUsers = this.usersRepository.findByEmail(email);
-        return optionalUsers.orElse(null);
+    public List<Applications> getApplicationsByUserId(int userId) {
+        return this.applicationsRepository.findByUserId(userId);
     }
 
-    public boolean create(Users users) {
-        Optional<Users> userBDD = this.usersRepository.findByEmail(users.getEmail());
-        if (userBDD.isPresent()) {
-            throw new UserAlreadyExistsException("Un utilisateur avec cet email existe déjà.");
+    public boolean create(Applications applications) {
+        try {
+            this.applicationsRepository.save(applications);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la création de l'application : " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean update(int id, Applications updatedApplication) {
+        Optional<Applications> applicationBDD = this.applicationsRepository.findById(id);
+        if (applicationBDD.isEmpty()) {
+            throw new ApplicationNotFoundException("Application non trouvée avec l'ID : " + id);
         } else {
-            users.setPassword(passwordEncoder.encode(users.getPassword()));
-            this.usersRepository.save(users);
+            Applications existingApplication = applicationBDD.get();
+            existingApplication.setCompany_name(updatedApplication.getCompany_name());
+            existingApplication.setWebsite(updatedApplication.getWebsite());
+            existingApplication.setApplication_link(updatedApplication.getApplication_link());
+            existingApplication.setApplication_date(updatedApplication.getApplication_date());
+            existingApplication.setNote(updatedApplication.getNote());
+            existingApplication.setFirst_relaunch(updatedApplication.getFirst_relaunch());
+            existingApplication.setSecond_relaunch(updatedApplication.getSecond_relaunch());
+            existingApplication.setInterview_date(updatedApplication.getInterview_date());
+            existingApplication.setFinal_response(updatedApplication.getFinal_response());
+            existingApplication.setFinal_response_date(updatedApplication.getFinal_response_date());
+            this.applicationsRepository.save(existingApplication);
+            System.out.println("Mise à jour de l'application réussie");
             return true;
         }
     }
 
-    public String authenticate(String email, String password) {
-        Users user = getUserByEmail(email);
-        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
-            throw new AuthenticationException("Invalid email or password");
-        }
-        // For simplicity, return a message instead of a token
-        return "Connexion réussi";
-    }
-
-    public boolean update(int id, Users updatedUser) {
-        Optional<Users> userBDD = this.usersRepository.findById(id);
-        if (userBDD.isEmpty()) {
-            throw new UserNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
+    public void deleteApplication(int id) {
+        Optional<Applications> applicationBDD = this.applicationsRepository.findById(id);
+        if (applicationBDD.isEmpty()) {
+            System.out.println("L'application avec l'id " + id + " n'existe pas");
         } else {
-            Users existingUser = userBDD.get();
-            existingUser.setFirstname(updatedUser.getFirstname());
-            existingUser.setLastname(updatedUser.getLastname());
-            existingUser.setCity(updatedUser.getCity());
-            existingUser.setPhone(updatedUser.getPhone());
-            existingUser.setEmail(updatedUser.getEmail());
-            this.usersRepository.save(existingUser);
-            System.out.println("Modification des information réussie");
-            return true;
-        }
-    }
-
-    public void deleteUser(int id) {
-        Optional<Users> userBDD = this.usersRepository.findById(id);
-        if (userBDD.isEmpty()) {
-            System.out.println("L'utilisateur avec l'id" + id + "n'existe pas");
-        } else {
-            this.usersRepository.deleteById(id);
-            System.out.println("Suppression réussie");
+            this.applicationsRepository.deleteById(id);
+            System.out.println("Suppression de l'application réussie");
         }
     }
 

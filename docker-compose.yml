@@ -1,0 +1,68 @@
+services:
+  # Service MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: candidatrace-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./db/seeders.sql:/docker-entrypoint-initdb.d/02-seeders.sql
+    networks:
+      - candidatrace-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Service Spring Boot API
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: candidatrace-server
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
+    ports:
+      - "${SERVER_PORT}:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - candidatrace-network
+    restart: unless-stopped
+
+  # Service Angular Client
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: candidatrace-client
+    ports:
+      - "${CLIENT_PORT}:80"
+    depends_on:
+      - server
+    environment:
+      - API_URL=http://localhost:8080
+    networks:
+      - candidatrace-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  candidatrace-network:
+    driver: bridge

@@ -1,10 +1,12 @@
 package candidatrace.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class Users {
 
     @Id
@@ -21,6 +23,10 @@ public class Users {
     @Column(name = "registration_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date registrationDate;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Applications> applications;
 
     public Users() {
     }
@@ -109,9 +115,29 @@ public class Users {
         this.registrationDate = registrationDate;
     }
 
+    public List<Applications> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<Applications> applications) {
+        this.applications = applications;
+    }
+
     @PrePersist
     protected void onCreate() {
         registrationDate = new Date();
     }
 
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", city='" + city + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", registration_date=" + registrationDate +
+                '}';
+    }
 }

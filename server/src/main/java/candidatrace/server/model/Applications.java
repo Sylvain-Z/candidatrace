@@ -4,37 +4,70 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "USERS")
-public class Users {
+@Table(name = "applications")
+public class Applications {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String firstname;
-    private String lastname;
-    private String city;
-    private String phone;
-    @Column(unique = true) // paramètre l'unicité des données de la colonne
-    private String email;
-    private String password;
-    private String profile_pic;
-    @Column(name = "registration_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date registrationDate;
 
-    public Users() {
+    @Column(name = "company_name")
+    private String company_name;
+
+    @Column(name = "website", columnDefinition = "MEDIUMTEXT")
+    private String website;
+
+    @Column(name = "application_link", columnDefinition = "MEDIUMTEXT")
+    private String application_link;
+
+    @Column(name = "application_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date application_date;
+
+    @Column(name = "note", columnDefinition = "MEDIUMTEXT")
+    private String note;
+
+    @Column(name = "first_relaunch")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date first_relaunch;
+
+    @Column(name = "second_relaunch")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date second_relaunch;
+
+    @Column(name = "interview_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date interview_date;
+
+    @Column(name = "final_response", columnDefinition = "TINYINT(1)")
+    private Boolean final_response;
+
+    @Column(name = "final_response_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date final_response_date;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
+
+    public Applications() {
     }
 
-    public Users(int id, String firstname, String lastname, String city, String phone, String email, String password, String profile_pic, String registration_date) {
+    public Applications(int id, String company_name, String website, String application_link, Date application_date,
+                       String note, Date first_relaunch, Date second_relaunch, Date interview_date,
+                       Boolean final_response, Date final_response_date, Users user) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.city = city;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-        this.profile_pic = profile_pic;
-        this.registrationDate = registrationDate;
+        this.company_name = company_name;
+        this.website = website;
+        this.application_link = application_link;
+        this.application_date = application_date;
+        this.note = note;
+        this.first_relaunch = first_relaunch;
+        this.second_relaunch = second_relaunch;
+        this.interview_date = interview_date;
+        this.final_response = final_response;
+        this.final_response_date = final_response_date;
+        this.user = user;
     }
 
     public int getId() {
@@ -45,73 +78,109 @@ public class Users {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getCompany_name() {
+        return company_name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
-    public String getCity() {
-        return city;
+    public String getApplication_link() {
+        return application_link;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setApplication_link(String application_link) {
+        this.application_link = application_link;
     }
 
-    public String getPhone() {
-        return phone;
+    public Date getApplication_date() {
+        return application_date;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setApplication_date(Date application_date) {
+        this.application_date = application_date;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNote() {
+        return note;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getFirst_relaunch() {
+        return first_relaunch;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFirst_relaunch(Date first_relaunch) {
+        this.first_relaunch = first_relaunch;
     }
 
-    public String getProfile_pic() {
-        return profile_pic;
+    public Date getSecond_relaunch() {
+        return second_relaunch;
     }
 
-    public void setProfile_pic(String profile_pic) {
-        this.profile_pic = profile_pic;
+    public void setSecond_relaunch(Date second_relaunch) {
+        this.second_relaunch = second_relaunch;
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public Date getInterview_date() {
+        return interview_date;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setInterview_date(Date interview_date) {
+        this.interview_date = interview_date;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        registrationDate = new Date();
+    public Boolean getFinal_response() {
+        return final_response;
     }
 
+    public void setFinal_response(Boolean final_response) {
+        this.final_response = final_response;
+    }
+
+    public Date getFinal_response_date() {
+        return final_response_date;
+    }
+
+    public void setFinal_response_date(Date final_response_date) {
+        this.final_response_date = final_response_date;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Applications{" +
+                "id=" + id +
+                ", company_name='" + company_name + '\'' +
+                ", website='" + website + '\'' +
+                ", application_link='" + application_link + '\'' +
+                ", application_date=" + application_date +
+                ", note='" + note + '\'' +
+                ", first_relaunch=" + first_relaunch +
+                ", second_relaunch=" + second_relaunch +
+                ", interview_date=" + interview_date +
+                ", final_response=" + final_response +
+                ", final_response_date=" + final_response_date +
+                ", user=" + user +
+                '}';
+    }
 }

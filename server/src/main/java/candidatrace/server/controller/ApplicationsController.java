@@ -1,89 +1,75 @@
 package candidatrace.server.controller;
 
-import candidatrace.server.exception.AuthenticationException;
+import candidatrace.server.exception.ApplicationNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import candidatrace.server.model.Users;
-import candidatrace.server.service.UsersService;
+import candidatrace.server.model.Applications;
+import candidatrace.server.service.ApplicationsService;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "users")
-public class UsersController {
+@RequestMapping(path = "applications")
+public class ApplicationsController {
 
-    private UsersService usersService;
+    private ApplicationsService applicationsService;
 
-    public UsersController(UsersService usersService) {
-        this.usersService = usersService;
+    public ApplicationsController(ApplicationsService applicationsService) {
+        this.applicationsService = applicationsService;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "all", produces = APPLICATION_JSON_VALUE)
-    public List<Users> getAllUsers() {
-        return this.usersService.getAllUsers();
+    public List<Applications> getAllApplications() {
+        return this.applicationsService.getAllApplications();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "id/{id}", produces = APPLICATION_JSON_VALUE)
-    public Users getUserById(@PathVariable int id) {
-        return this.usersService.getUserById(id);
+    public Applications getApplicationById(@PathVariable int id) {
+        return this.applicationsService.getApplicationById(id);
     }
 
-    @GetMapping(path = "email/{email}", produces = APPLICATION_JSON_VALUE)
-    public Users getUserByEmail(@PathVariable String email) {
-        return this.usersService.getUserByEmail(email);
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "user/{userId}", produces = APPLICATION_JSON_VALUE)
+    public List<Applications> getApplicationsByUserId(@PathVariable int userId) {
+        return this.applicationsService.getApplicationsByUserId(userId);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(path = "create", consumes = APPLICATION_JSON_VALUE, produces = "text/plain")
-    // meme chose que : consumes = "application/json"
-    public ResponseEntity<String> create(@RequestBody Users users) {
-        boolean isCreated = usersService.create(users);
+    public ResponseEntity<String> create(@RequestBody Applications applications) {
+        boolean isCreated = applicationsService.create(applications);
         if (isCreated) {
-            System.out.println("UserController : Création du compte réussi");
-            return ResponseEntity.status(HttpStatus.CREATED).body("Utilisateur créé avec succès.");
+            System.out.println("ApplicationsController : Création de l'application réussi");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Application créée avec succès.");
         } else {
-            System.out.println("UserController : Création du compte échoué");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Un utilisateur avec cet email existe déjà.");
+            System.out.println("ApplicationsController : Création de l'application échoué");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Échec de la création de l'application.");
         }
     }
-
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping(path = "signin", consumes = APPLICATION_JSON_VALUE, produces = "text/plain")
-    public ResponseEntity<String> authenticate(@RequestBody Users users) {
-        try {
-            String message = usersService.authenticate(users.getEmail(), users.getPassword());
-            System.out.println("UserController : Connexion réussi");
-            return ResponseEntity.ok(message);
-        } catch (AuthenticationException e) {
-            System.out.println("UserController : Connexion échouée");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
-    }
-
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PutMapping(path = "update_infos/{id}", consumes = APPLICATION_JSON_VALUE, produces = "text/plain")
-    // meme chose que : consumes = "application/json"
-    public ResponseEntity<String> create(@PathVariable int id, @RequestBody Users users) {
-        boolean isUpdated = usersService.update(id, users);
+    @PutMapping(path = "update/{id}", consumes = APPLICATION_JSON_VALUE, produces = "text/plain")
+    public ResponseEntity<String> update(@PathVariable int id, @RequestBody Applications applications) {
+        boolean isUpdated = applicationsService.update(id, applications);
         if (isUpdated) {
-            System.out.println("UserController : Modification des information réussi");
-            return ResponseEntity.status(HttpStatus.CREATED).body("Informations modifiées.");
+            System.out.println("ApplicationsController : Mise à jour de l'application réussi");
+            return ResponseEntity.status(HttpStatus.OK).body("Application mise à jour.");
         } else {
-            System.out.println("UserController : Modification des information échoué");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Echec de la modification.");
+            System.out.println("ApplicationsController : Mise à jour de l'application échoué");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Application non trouvée.");
         }
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "delete/{id}")
-    public void deleteUser(@PathVariable int id){
-        this.usersService.deleteUser(id);
+    public void deleteApplication(@PathVariable int id) {
+        this.applicationsService.deleteApplication(id);
     }
 }
+

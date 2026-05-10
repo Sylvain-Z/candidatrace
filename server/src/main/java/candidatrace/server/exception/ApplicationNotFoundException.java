@@ -1,7 +1,7 @@
 package candidatrace.server.exception;
 
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
+public class ApplicationNotFoundException extends RuntimeException {
+    public ApplicationNotFoundException(String message) {
         super(message);
     }
 }
